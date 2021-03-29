@@ -2,6 +2,7 @@ package com.udacity.project4.locationreminders.savereminder.selectreminderlocati
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -95,6 +96,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap?) {
         googleMap?.let {
             map = it
+            enableMyLocation()
             map.setOnMapClickListener { latlng ->
                 map.clear()
                 val marker = MarkerOptions()
@@ -109,7 +111,6 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
                 map.addMarker(marker)
                 _viewModel.poiSelected(poi)
             }
-            enableMyLocation()
         }
     }
 
@@ -125,13 +126,17 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         requestCode: Int,
         permissions: Array<String>,
         grantResults: IntArray) {
+        Log.i("perms res", "called")
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            Log.i("perms res", "location")
             if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                Log.i("perms res", "enable")
                 enableMyLocation()
             }
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun enableMyLocation() {
         if (isPermissionGranted()) {
             map.isMyLocationEnabled = true
@@ -141,11 +146,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(homeLatLng, zoom))
         }
         else {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_LOCATION_PERMISSION
-            )
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
         }
     }
 
