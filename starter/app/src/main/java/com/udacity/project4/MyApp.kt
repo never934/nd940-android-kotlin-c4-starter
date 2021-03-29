@@ -9,6 +9,7 @@ import com.udacity.project4.locationreminders.data.local.RemindersLocalRepositor
 import com.udacity.project4.locationreminders.reminderslist.RemindersListViewModel
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.utils.LocationUtils
+import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -33,7 +34,7 @@ class MyApp : MultiDexApplication() {
             single {
                 AuthenticationViewModel(
                     get(),
-                    get()
+                    get() as ReminderDataSource
                 )
             }
             //Declare singleton definitions to be later injected using by inject()
@@ -45,7 +46,7 @@ class MyApp : MultiDexApplication() {
                 )
             }
             single { LocationUtils(this@MyApp) }
-            single { RemindersLocalRepository(get()) as ReminderDataSource }
+            single<ReminderDataSource> { RemindersLocalRepository(get()) }
             single { LocalDB.createRemindersDao(this@MyApp) }
         }
 
@@ -53,5 +54,6 @@ class MyApp : MultiDexApplication() {
             androidContext(this@MyApp)
             modules(listOf(myModule))
         }
+
     }
 }
