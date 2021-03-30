@@ -43,4 +43,12 @@
     <string name="error_adding_geofence">Error Happened, Can\'t Add Geofence</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
+
+    <!-- Detail activity !-->
+    <string name="detail_reminder_title">title: %s</string>
+    <string name="detail_reminder_description">description: %s</string>
+    <string name="detail_reminder_location">location: %s</string>
+    <string name="detail_reminder_lat">lat: %.2f</string>
+    <string name="detail_reminder_lng">lng: %.2f</string>
+    <string name="close">close</string>
 </resources>

@@ -70,7 +70,9 @@ class SaveReminderViewModel(val app: Application, val dataSource: ReminderDataSo
      * location on map selected
      */
     fun locationSelected(latLng: LatLng) {
-        _reminderSelectedLocationStr.value = "${latLng.latitude} ${latLng.longitude}"
+        val lat = String.format("%.2f", latLng.latitude).toDouble()
+        val lng = String.format("%.2f", latLng.longitude).toDouble()
+        _reminderSelectedLocationStr.value = "$lat\n$lng"
         _latLng.value = latLng
     }
 
