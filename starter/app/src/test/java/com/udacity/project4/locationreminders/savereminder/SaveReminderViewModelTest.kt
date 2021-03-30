@@ -71,7 +71,7 @@ class SaveReminderViewModelTest {
         assertThat(saveReminderViewModel.showLoading.getOrAwaitValue(), `is`(false))
         assertEquals(saveReminderViewModel.navigationCommand.getOrAwaitValue(), NavigationCommand.Back)
     }
-    
+
 
     @Test
     fun onClear_success() = mainCoroutineRule.runBlockingTest {
