@@ -65,7 +65,6 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         setDisplayHomeAsUpEnabled(true)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-//        TODO: add style to the map
         return binding.root
     }
 
@@ -96,6 +95,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap?) {
         googleMap?.let {
             map = it
+            setMapStyle(map)
             enableMyLocation()
             map.setOnMapClickListener { latlng ->
                 map.clear()
@@ -114,7 +114,20 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         }
     }
 
-    /** permissions **/
+    private fun setMapStyle(map: GoogleMap) {
+        try {
+            map.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    requireContext(),
+                    R.raw.map_style
+                )
+            )
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
+    /** permissions location **/
 
     private fun isPermissionGranted() : Boolean {
         return ContextCompat.checkSelfPermission(
@@ -126,11 +139,8 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         requestCode: Int,
         permissions: Array<String>,
         grantResults: IntArray) {
-        Log.i("perms res", "called")
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
-            Log.i("perms res", "location")
             if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                Log.i("perms res", "enable")
                 enableMyLocation()
             }
         }
